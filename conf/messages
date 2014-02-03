@@ -1,0 +1,16 @@
+eventId = イベントID
+eventNm = イベント名
+constraint.required= 必須
+error.required=必須項目です。
+constraint.maxLength=最大文字列長：{0}
+error.maxLength={0}文字以内で入力して下さい。
+constraint.fixLength=固定文字列長：{0}
+error.fixLength={0}文字で入力して下さい。
+eventDate = 開催日
+eventDateFrom = 開催日（From）
+eventDateTo = 開催日（To）
+homepage = ホームページ
+constraint.isUrl=URL
+error.isUrl=URLの形式で入力して下さい。
+format.date=日付 年-月-日
+error.date=日付形式で入力してください。
