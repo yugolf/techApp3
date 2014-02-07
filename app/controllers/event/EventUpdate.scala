@@ -19,8 +19,11 @@ object EventUpdate extends Controller {
 
   /** 初期表示 */
   def index(id: Int) = Action { implicit request =>
+    import scala.language.implicitConversions
+    implicit def sessionToList[T](f: slick.driver.H2Driver.simple.Session => T): T = { f }
+
     val event = Events.findById(id)
-    val form = EventForm(event.eventId, event.eventNm,  event.eventDate, event.homepage)
+    val form = EventForm(event.eventId, event.eventNm, event.eventDate, event.homepage)
     Ok(views.html.event.eventUpdate(eventForm.fill(form), id))
   }
 
@@ -34,7 +37,7 @@ object EventUpdate extends Controller {
         val event = Event(id, form.eventId, form.eventNm, form.eventDate, form.homepage)
         Events.update(event)
         Redirect(controllers.event.routes.EventUpdate.index(id))
-        .flashing("success" -> "変更しました。")
+          .flashing("success" -> "変更しました。")
       })
   }
 

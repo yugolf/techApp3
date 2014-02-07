@@ -5,7 +5,7 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import xenlon.api.data.validation.XenlonConstraints._
-import models.{ EventSearchForm, Events }
+import models.{ EventSearchForm, Events, Event }
 
 object EventSearch extends Controller {
 
@@ -29,6 +29,9 @@ object EventSearch extends Controller {
         Ok(views.html.event.eventSearch(form, null))
       },
       success = { form =>
+//        import scala.language.implicitConversions
+//        implicit def sessionToT[T](f: slick.driver.H2Driver.simple.Session => T): T = { f }
+
         if (form.eventDateFrom.isDefined
           && form.eventDateTo.isDefined
           && form.eventDateFrom.get.after(form.eventDateTo.get)) {
@@ -36,6 +39,7 @@ object EventSearch extends Controller {
             .withError("eventDateFrom", "開催日（From）は開催日（To）より前の日付を入力してください。")
             .withError("eventDateTo", ""), null))
         } else {
+
           val events = Events.find(form.eventId, form.eventNm, form.eventDateFrom, form.eventDateTo)
           Ok(views.html.event.eventSearch(eventSearchForm.bindFromRequest, events))
         }
@@ -45,6 +49,6 @@ object EventSearch extends Controller {
   def delete(id: Int) = Action { implicit request =>
     Events.delete(id)
     Redirect(controllers.event.routes.EventSearch.index)
-    .flashing("success" -> "削除しました。")
+      .flashing("success" -> "削除しました。")
   }
 }
